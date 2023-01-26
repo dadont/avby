@@ -1,0 +1,59 @@
+version: '3.8'
+
+services:
+  nginx2:
+    networks:
+      avby:
+    image: nginx
+    container_name: nginx2
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./ssl:/etc/ssl
+      - ./src:/var/www
+    restart: always
+    depends_on:
+      - php2
+      - mysql2
+
+  mysql2:
+    networks:
+      avby:
+        ipv4_address: 172.21.0.10
+    image: mysql:8.0.21
+    command: --default-authentication-plugin=mysql_native_password
+    container_name: mysql2
+    restart: always
+    tty: true
+    volumes:
+      - ./mysql:/var/lib/mysql
+    ports:
+      - "13308:3306"
+    environment:
+      MYSQL_DATABASE: avby
+      MYSQL_ROOT_PASSWORD: secret
+      SERVICE_TAG: dev
+      SERVICE_NAME: mysql
+
+  php2:
+    networks:
+      avby:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    working_dir: /var/www
+    container_name: php2
+    volumes:
+      - ./src:/var/www
+    ports:
+      - "900:9000"
+    restart: always
+
+networks:
+  avby:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.21.0.0/16
