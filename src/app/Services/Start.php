@@ -14,13 +14,26 @@ Class Start
     public static function start()
     {
 
-    $url = 'https://cars.av.by/filter?price_currency=1&sort=4';
-    //$response = Curl::curl($url);
-    
-    $document = new Document($url, true);
-    $links = $document->find('a[href]::attr(href)');
+    $url = 'https://mixnews.lv/prikolnye-kartinki';
+    //$url = 'https://cars.av.by/filter?price_currency=1&sort=4';
+    $response = Curl::curl($url);
+    //Storage::put('test.txt', $response);
+    //var_dump($response);
+    $crawler = new Crawler($response);
+    $div = $crawler->filter('div')->each(function($node) {
+        return $node->html();
+    });
 
-    var_dump($links);
+    preg_match_all('#(?:https?|ftp)://[^\s\,]+#i', $div[13], $matches);
+    var_dump($matches);
+    //print_r(gettype($div[13]));
+    
+    //$document = new Document($response, true);
+    //Storage::put('test.log', print_r(gettype($crawler)));
+    //var_dump($crawler);
+    //$links = $document->find('a[href^=/]::attr(href)');
+
+    //var_dump($links);
 
     //echo $document->first('title::text');
 
