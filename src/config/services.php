@@ -31,4 +31,10 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'bot' => [
+        'bot_token' => env('BOT_TOKEN'),
+        'web_site' => env('WEBSITE'),
+        'admin_chat_id' => env('ADMIN_CHAT_ID'),
+    ]
+
 ];

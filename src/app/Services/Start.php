@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Services\Curl;
+use App\Services\SendTextBot;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Facades\Storage;
 use DiDom\Document;
@@ -17,16 +18,30 @@ Class Start
     $url = 'https://mixnews.lv/prikolnye-kartinki';
     //$url = 'https://cars.av.by/filter?price_currency=1&sort=4';
     $response = Curl::curl($url);
-    //Storage::put('test.txt', $response);
+    sleep(5);
     //var_dump($response);
     $crawler = new Crawler($response);
     $div = $crawler->filter('div')->each(function($node) {
         return $node->html();
     });
 
-    preg_match_all('#(?:https?|ftp)://[^\s\,]+#i', $div[13], $matches);
-    var_dump($matches);
-    //print_r(gettype($div[13]));
+    preg_match_all('#(?:https?|ftp)://mixnews.lv/prikolnye-kartinki[^\s\,\>\"]+#i', $div[13], $matches);
+    $url=$matches[0][0];
+    $response = Curl::curl($url);
+    sleep(5);
+    //Storage::put('test2.txt', $response);
+    $crawler = new Crawler($response);
+    $div = $crawler->filter('div')->each(function($node) {
+        return $node->html();
+    });
+    preg_match_all('#(?:http)://mixnews.lv/wp-content[^\s\,\>\"]+#i', $div[9], $matches);
+    foreach($matches[0] as $key => $value){
+        //var_dump($value);
+        sleep(5);
+        SendTextBot::sendPhotoBot($value);
+    }
+    //SendTextBot::sendPhotoBot($matches[0][0]);
+    //print_r(gettype($div));
     
     //$document = new Document($response, true);
     //Storage::put('test.log', print_r(gettype($crawler)));
