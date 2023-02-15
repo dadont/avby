@@ -6,8 +6,8 @@ use App\Services\Curl;
 use App\Services\SendTextBot;
 use Symfony\Component\DomCrawler\Crawler;
 use Illuminate\Support\Facades\Storage;
-use DiDom\Document;
-use DiDom\Query;
+use Illuminate\Support\Facades\Cache;
+
 
 Class Start
 {
@@ -24,22 +24,28 @@ Class Start
     $div = $crawler->filter('div')->each(function($node) {
         return $node->html();
     });
-
     preg_match_all('#(?:https?|ftp)://mixnews.lv/prikolnye-kartinki[^\s\,\>\"]+#i', $div[13], $matches);
     $url=$matches[0][0];
-    $response = Curl::curl($url);
-    sleep(5);
-    //Storage::put('test2.txt', $response);
-    $crawler = new Crawler($response);
-    $div = $crawler->filter('div')->each(function($node) {
-        return $node->html();
-    });
-    preg_match_all('#(?:http)://mixnews.lv/wp-content[^\s\,\>\"]+#i', $div[9], $matches);
-    foreach($matches[0] as $key => $value){
-        //var_dump($value);
+    $cache_url = Cache::get('url');
+    if ($url != $cache_url){
+        Cache::put('url', $url);
+        $response = Curl::curl($url);
         sleep(5);
-        SendTextBot::sendPhotoBot($value);
+        //Storage::put('test2.txt', $response);
+        $crawler = new Crawler($response);
+        $div = $crawler->filter('div')->each(function($node) {
+            return $node->html();
+        });
+        preg_match_all('#(?:http)://mixnews.lv/wp-content[^\s\,\>\"]+#i', $div[9], $matches);
+        foreach($matches[0] as $key => $value){
+            //var_dump($value);
+            sleep(5);
+            //print_r($value);
+            SendTextBot::sendPhotoBot($value);
+        }
     }
+        
+    
     //SendTextBot::sendPhotoBot($matches[0][0]);
     //print_r(gettype($div));
     
