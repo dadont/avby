@@ -45,12 +45,15 @@ class SendTextBot
             'photo' => $url,
             'parse_mode' => "html",
         );
+        
         $ch = curl_init('https://api.telegram.org/bot'. $bot['bot_token'] .'/sendPhoto');
+        //dd($ch);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $arrayQuery);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HEADER, false);
         $res = curl_exec($ch);
+        //dd($res);
         curl_close($ch);
     }
 

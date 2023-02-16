@@ -34,6 +34,7 @@ return [
     'bot' => [
         'bot_token' => env('BOT_TOKEN'),
         'web_site' => env('WEBSITE'),
+        'chat_id' => env('CHAT_ID'),
         'admin_chat_id' => env('ADMIN_CHAT_ID'),
     ]
 
