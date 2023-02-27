@@ -31,6 +31,7 @@ Class Start
         $url=$matches[0][0];
         
         $cache_url = Cache::get('url');
+        //dd($cache_url, $url);
         if ($url != $cache_url){
             
             Cache::put('url', $url);
