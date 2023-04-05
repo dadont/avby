@@ -24,16 +24,21 @@ Class Start
     $div = $crawler->filter('div')->each(function($node) {
         return $node->html();
     });
-    
-    if($div[13]){
-        
-        preg_match_all('#(?:https?|ftp)://mixnews.lv/prikolnye-kartinki[^\s\,\>\"]+#i', $div[13], $matches);
+    //dd($div);
+    if($div[11]){
+
+        preg_match_all('#(?:https?|ftp)://mixnews.lv/prikolnye-kartinki[^\s\,\>\"]+#i', $div[11], $matches);
+
+        if(array_key_exists(0, $matches[0]) == false){
+            SendTextBot::sendTextBot("139690170", "Ошибка");
+            exit;
+        }
         $url=$matches[0][0];
-        
+
         $cache_url = Cache::get('url');
         //dd($cache_url, $url);
         if ($url != $cache_url){
-            
+
             Cache::put('url', $url);
             $response = Curl::curl($url);
             sleep(5);
@@ -42,22 +47,22 @@ Class Start
             $div = $crawler->filter('div')->each(function($node) {
                 return $node->html();
             });
-            
+
             preg_match_all('#(?:http)://mixnews.lv/wp-content[^\s\,\>\"]+#i', $div[9], $matches);
             foreach($matches[0] as $key => $value){
                 //var_dump($value);
-                
+
                 sleep(5);
                 //print_r($value);
                 SendTextBot::sendPhotoBot($value);
             }
         }
     }
-        
-    
+
+
     //SendTextBot::sendPhotoBot($matches[0][0]);
     //print_r(gettype($div));
-    
+
     //$document = new Document($response, true);
     //Storage::put('test.log', print_r(gettype($crawler)));
     //var_dump($crawler);
