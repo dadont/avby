@@ -25,12 +25,12 @@ Class Start
         return $node->html();
     });
     //dd($div);
-    if($div[11]){
+    if($div[12]){
 
-        preg_match_all('#(?:https?|ftp)://mixnews.lv/prikolnye-kartinki[^\s\,\>\"]+#i', $div[11], $matches);
+        preg_match_all('#(?:https?|ftp)://mixnews.lv/prikolnye-kartinki[^\s\,\>\"]+#i', $div[12], $matches);
 
         if(array_key_exists(0, $matches[0]) == false){
-            SendTextBot::sendTextBot("139690170", "Ошибка");
+            SendTextBot::sendTextBot("139690170", "Ошибка div");
             exit;
         }
         $url=$matches[0][0];
