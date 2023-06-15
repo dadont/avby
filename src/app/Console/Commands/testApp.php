@@ -15,7 +15,7 @@ class testApp extends Command
      *
      * @var string
      */
-    protected $signature = 'lpolo:testApp';
+    protected $signature = 'testApp';
 
     /**
      * The console command description.
@@ -31,9 +31,9 @@ class testApp extends Command
      */
     public function handle()
     {
-        FindAndBuy::send_messages('test', 'test1', 86400);
+        SendTextBot::sendTextBot('139690170');
 
-        
+
         //$response = new(TestCase::class);
         //$response2 = $response->get('/api/v1/my_bal/all');
         //dd($response2);
