@@ -24,7 +24,7 @@ Class Start
     $div = $crawler->filter('div')->each(function($node) {
         return $node->html();
     });
-    //dd($div);
+    //dd($div[11]);
     if($div[12]){
 
         preg_match_all('#(?:https?|ftp)://mixnews.lv/prikolnye-kartinki[^\s\,\>\"]+#i', $div[12], $matches);
