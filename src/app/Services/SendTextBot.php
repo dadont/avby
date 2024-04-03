@@ -31,7 +31,7 @@ class SendTextBot
     public static function sendButtonBot($chatId, $text, $arrayButtons){
     $inline_keyboard = array($arrayButtons);
     $keyboard=array("inline_keyboard"=>$inline_keyboard);
-    $replyMarkup = json_encode($keyboard); 
+    $replyMarkup = json_encode($keyboard);
     $bot = config('services.bot');
         $url_bot = $bot['web_site'].$bot['bot_token']."/sendmessage?chat_id=".$chatId."&text=".$text.'&reply_markup=' . $replyMarkup;
         $response = file_get_contents($url_bot);
@@ -41,11 +41,11 @@ class SendTextBot
     public static function sendPhotoBot($url){
         $bot = config('services.bot');
         $arrayQuery = array(
-            'chat_id' => $bot['admin_chat_id'],
+            'chat_id' => $bot['chat_id'],
             'photo' => $url,
             'parse_mode' => "html",
         );
-        
+
         $ch = curl_init('https://api.telegram.org/bot'. $bot['bot_token'] .'/sendPhoto');
         //dd($ch);
         curl_setopt($ch, CURLOPT_POST, 1);
