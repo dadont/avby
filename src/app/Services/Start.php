@@ -26,7 +26,7 @@ Class Start
     $div = $crawler->filter('div')->each(function($node) {
         return $node->html();
     });
-    //dd($div);
+    //dd($div[8]);
     //foreach($div as $key => $value){
     //    if(preg_match_all('#(?:https)://mixnews.lv/wp-content[^\s\,\>\"]+#i', $value, $matches)){
     //        var_dump($matches);
@@ -35,9 +35,9 @@ Class Start
     //}
     //dd(sizeof($div));
     //div11? 17? 21
-    if($div[11]){
+    if($div[8]){
 
-        preg_match_all('#(?:https?|ftp)://mixnews.lv/prikolnye-kartinki[^\s\,\>\"]+#i', $div[11], $matches);
+        preg_match_all('#(?:https?|ftp)://mixnews.lv/prikolnye-kartinki[^\s\,\>\"]+#i', $div[8], $matches);
         //dd($matches[0][0]);
 
         if(array_key_exists(0, $matches[0]) == false){
